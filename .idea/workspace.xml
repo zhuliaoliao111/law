@@ -5,33 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de9b7a0d-773f-40de-9b94-dba478f7dd6f" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/law-master/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/.idea/law.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/ai_legal_history.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/backend/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/backend/app/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/backend/app/api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/backend/app/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/backend/app/services/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/backend/app/services/langchain_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/backend/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/backend/uvicorn" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/law-master/frontend/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uvicorn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/law.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/law.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/api.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/services/langchain_service.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/services/langchain_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/services/langchain_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/git_upload_steps.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +82,7 @@
       <option name="presentableId" value="Default" />
       <updated>1752197809192</updated>
       <workItem from="1752197810364" duration="2385000" />
+      <workItem from="1752287937636" duration="4582000" />
     </task>
     <servers />
   </component>

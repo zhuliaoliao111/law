@@ -49,7 +49,9 @@ MODEL_CONFIG = {
 
 }
 
+# 1. 保存历史
 def save_history(session_id: str, model: str, question: str, answer: str):
+    # 将本轮问答存入数据库，session_id用于标识同一会话
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('INSERT INTO chat_history (session_id, model, question, answer) VALUES (?, ?, ?, ?)',
@@ -57,7 +59,9 @@ def save_history(session_id: str, model: str, question: str, answer: str):
     conn.commit()
     conn.close()
 
+# 2. 获取历史
 def get_history(session_id: str) -> List[Dict]:
+    # 查询数据库，获取该session_id的所有历史问答
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('SELECT question, answer, model, timestamp FROM chat_history WHERE session_id=? ORDER BY id', (session_id,))
@@ -71,18 +75,19 @@ def ai_legal_qa_function(question: str, model: str = 'gpt-3.5', session_id: Opti
     """
     import re
     history = get_history(session_id) if session_id else []
-    # 构造prompt，加入历史问答内容，提升记忆能力
+    # 3. 构造prompt时，将最近历史问答内容拼接到prompt前面
     history_prompt = ''
     if history:
-        for idx, h in enumerate(history[-5:]):  # 只取最近5轮，防止prompt过长
+        for idx, h in enumerate(history[-3:]):  # 只取最近3轮，防止prompt过长
             history_prompt += f"\n历史问题{idx+1}: {h['question']}\n历史回答{idx+1}: {h['answer']}\n"
     prompt = (
-        f"请你作为专业法律助手，参考用户历史提问和AI历史回答，结合当前问题，严格按照以下格式分三部分输出：\n"
+        f"请你作为专业法律助手，必须严格参考用户的历史提问，结合历史问题的关键词，再结合当前问题，严格按照以下格式分三部分输出：\n"
         f"{history_prompt}"
         f"当前问题：{question}\n"
         f"1. 法律条文依据：\n[在这里详细列出相关的法律条文和依据]\n\n"
         f"2. 参考案例：\n[在这里提供相关的参考案例]\n\n"
         f"3. 实际解决办法：\n[在这里提供具体的解决步骤和建议]\n"
+        f"4. 总结回答：\n[在这里总结总体的回答，包括法律条文依据、参考案例和实际解决办法，并针对问题给出具体的回答]\n"
     )
     answer = ''
     if model == '通义千问':
@@ -168,31 +173,42 @@ def ai_legal_qa_function(question: str, model: str = 'gpt-3.5', session_id: Opti
         answer = f"暂未实现对{model}的API集成。"
     # 自动分段解析
     def parse_answer(ans):
-        law, case, solution = '', '', ans
+        law, case, solution, summary = '', '', '', ''
         # 优化分割逻辑，兼容更多格式
-        # 1. 先尝试常规三段分割
         patterns = [
-            r'1[、.、．]? ?法律条文依据[:：]?\s*(.*?)(?:\n|\r|$)2[、.、．]? ?参考案例[:：]?\s*(.*?)(?:\n|\r|$)3[、.、．]? ?实际解决办法[:：]?\s*(.*)',
-            r'1[、.、．]? ?法律条文依据[:：]?\s*(.*?)(?:2[、.、．]? ?参考案例[:：]?)(.*?)(?:3[、.、．]? ?实际解决办法[:：]?)(.*)',
-            r'1[、.、．]? ?(.*?)(2[、.、．]? ?)(.*?)(3[、.、．]? ?)(.*)',
+            r'1[、.、．]? ?法律条文依据[:：]?\s*(.*?)(?:\n|\r|$)2[、.、．]? ?参考案例[:：]?\s*(.*?)(?:\n|\r|$)3[、.、．]? ?实际解决办法[:：]?\s*(.*?)(?:\n|\r|$)4[、.、．]? ?总结回答[:：]?\s*(.*)',
+            r'1[、.、．]? ?法律条文依据[:：]?\s*(.*?)(?:2[、.、．]? ?参考案例[:：]?)(.*?)(?:3[、.、．]? ?实际解决办法[:：]?)(.*?)(?:4[、.、．]? ?总结回答[:：]?)(.*)',
+            r'1[、.、．]? ?(.*?)(2[、.、．]? ?)(.*?)(3[、.、．]? ?)(.*?)(4[、.、．]? ?)(.*)'
         ]
         for pattern in patterns:
             m = re.search(pattern, ans, re.S)
             if m:
-                if len(m.groups()) == 3:
+                if len(m.groups()) == 4:
                     law = m.group(1).strip()
                     case = m.group(2).strip()
                     solution = m.group(3).strip()
+                    summary = m.group(4).strip()
                 elif len(m.groups()) == 5:
+                    law = m.group(1).strip()
+                    case = m.group(2).strip()
+                    solution = m.group(3).strip()
+                    summary = m.group(5).strip()
+                elif len(m.groups()) == 7:
                     law = m.group(1).strip()
                     case = m.group(3).strip()
                     solution = m.group(5).strip()
+                    summary = m.group(7).strip()
                 break
         # 2. 如果没有分割成功，尝试按换行和数字分割
         if not law and not case:
             parts = re.split(r'\n?\d+[、.、．]?[. ]?', ans)
             parts = [p.strip() for p in parts if p.strip()]
-            if len(parts) >= 3:
+            if len(parts) >= 4:
+                law = parts[0]
+                case = parts[1]
+                solution = parts[2]
+                summary = parts[3]
+            elif len(parts) == 3:
                 law = parts[0]
                 case = parts[1]
                 solution = parts[2]
@@ -203,16 +219,19 @@ def ai_legal_qa_function(question: str, model: str = 'gpt-3.5', session_id: Opti
                 solution = parts[0]
         # 3. 如果还是没有，尝试按关键词分割
         if not law and not case:
-            law_match = re.search(r'法律条文依据[:：]?\s*(.*?)(参考案例[:：]?|实际解决办法[:：]?|$)', ans, re.S)
+            law_match = re.search(r'法律条文依据[:：]?\s*(.*?)(参考案例[:：]?|实际解决办法[:：]?|总结回答[:：]?|$)', ans, re.S)
             if law_match:
                 law = law_match.group(1).strip()
-            case_match = re.search(r'参考案例[:：]?\s*(.*?)(实际解决办法[:：]?|$)', ans, re.S)
+            case_match = re.search(r'参考案例[:：]?\s*(.*?)(实际解决办法[:：]?|总结回答[:：]?|$)', ans, re.S)
             if case_match:
                 case = case_match.group(1).strip()
-            solution_match = re.search(r'实际解决办法[:：]?\s*(.*)', ans, re.S)
+            solution_match = re.search(r'实际解决办法[:：]?\s*(.*?)(总结回答[:：]?|$)', ans, re.S)
             if solution_match:
                 solution = solution_match.group(1).strip()
-        return law, case, solution
+            summary_match = re.search(r'总结回答[:：]?\s*(.*)', ans, re.S)
+            if summary_match:
+                summary = summary_match.group(1).strip()
+        return law, case, solution, summary
     def clean_text(text):
         import re
         # 去除markdown标题、粗体、列表等符号
@@ -229,14 +248,24 @@ def ai_legal_qa_function(question: str, model: str = 'gpt-3.5', session_id: Opti
         # 去除首尾空白
         text = text.strip()
         # 去除通义千问答案结尾的'}}]},,'等异常符号
-        text = re.sub(r'"[}}\]\]},,]+$', '', text)
+        text = re.sub(r'"[}}\]\]},,]+$','', text)
         return text
-    law, case, solution = map(clean_text, parse_answer(answer))
+    law, case, solution, summary = map(clean_text, parse_answer(answer))
     if session_id:
         save_history(session_id, model, question, answer)
+    else:
+        return {
+            'law': law,
+            'case': case,
+            'solution': solution,
+            'summary': summary,
+            'history': [],
+            'msg': '未传递session_id，无法实现记忆功能。请确保每次问答都传递同一个session_id。'
+        }
     return {
         'law': law,
         'case': case,
         'solution': solution,
+        'summary': summary,
         'history': history + [{'question': question, 'answer': answer, 'model': model}]
     }

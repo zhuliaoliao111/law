@@ -4,163 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>智能法律助手</title>
-  <style>
-    :root {
-      --main-purple: #6f4a8e;
-      --secondary-purple: #807b9e;
-      --dark: #040404;
-      --light: #ebebeb;
-      --sidebar-bg: #6f4a8e;
-      --sidebar-hover: #807b9e;
-      --sidebar-active: #807b9e;
-      --main-bg: #ffffff;
-      --bubble-user: #f0f0f0; /* 浅灰色，与图片一致 */
-      --bubble-ai: #ede7f6;   /* 浅紫色，与图片一致 */
-      --ai-border: #807b9e;
-      --header-text: #6f4a8e;
-      --button-bg: #6f4a8e;
-      --button-hover: #807b9e;
-      --button-text: #fff;
-      --suggestion-bg: #ebebeb;
-      --suggestion-hover: #d6d3e0;
-    }
-    html, body {
-      height: 100vh;
-      min-height: 0;
-    }
-    body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: var(--main-bg); height: 100vh; min-height: 0; }
-    .container {
-      display: flex;
-      height: 100vh;
-      min-height: 0;
-      width: 100vw;
-    }
-    .sidebar {
-      width: 220px;
-      background: var(--sidebar-bg);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding-top: 0;
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      height: 100vh;
-      z-index: 2;
-    }
-    .sidebar-header { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 24px 20px 16px 20px; }
-    .logo { display: flex; align-items: center; cursor: pointer; }
-    .logo img { width: 36px; height: 36px; margin-right: 10px; }
-    .logo span { font-size: 22px; font-weight: bold; letter-spacing: 1px; }
-    .sidebar nav { width: 100%; margin-top: 24px; }
-    .sidebar button { width: 100%; background: none; border: none; color: #fff; padding: 18px 0 18px 36px; font-size: 17px; cursor: pointer; text-align: left; transition: background 0.2s, color 0.2s; border-radius: 0 24px 24px 0; margin-bottom: 4px; }
-    .sidebar button.active, .sidebar button:hover { background: var(--sidebar-hover); color: #fff; }
-    .main-content {
-      flex: 1;
-      background: #fff;
-      border-radius: 24px;
-      padding: 32px;
-      box-shadow: 0 4px 24px rgba(111,74,142,0.08);
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      left: 220px;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      height: 100vh;
-      min-width: 0;
-      min-height: 0;
-    }
-    .home-header { padding: 60px 40px 0 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    .home-header h1 { margin: 0 0 18px 0; font-size: 38px; color: var(--header-text); letter-spacing: 2px; }
-    .home-header p { color: var(--secondary-purple); margin: 0 0 10px 0; font-size: 20px; }
-    .home-desc { color: #666; font-size: 16px; margin-top: 30px; text-align: center; }
-    /* AI懂法样式复用 */
-    .history-float-btn { position: absolute; top: 32px; left: 40px; z-index: 10; background: var(--main-purple); border: none; border-radius: 50%; width: 52px; height: 52px; box-shadow: 0 2px 8px rgba(111,74,142,0.10); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
-    .history-float-btn:hover { background: var(--sidebar-hover); }
-    .history-float-btn img { width: 32px; height: 32px; filter: brightness(0) invert(1); }
-    .ai-header { padding: 40px 40px 0 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    .ai-header h2 { margin: 0 0 10px 0; font-size: 32px; color: var(--header-text); }
-    .ai-header p { color: var(--secondary-purple); margin: 0; font-size: 17px; }
-    .chat-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      height: 100%;
-      min-height: 0;
-      padding: 60px 40px 40px 40px;
-      padding-bottom: 120px;
-    }
-    .chat-history {
-      flex: 1 1 auto;
-      overflow-y: auto;
-      min-height: 0;
-      margin-bottom: 0;
-      /* 不再留padding-bottom，内容可被输入栏遮挡 */
-    }
-    .ai-bottom-bar {
-      width: 100%;
-      background: #fff;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      box-sizing: border-box;
-      padding: 0 0 0 0;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(111,74,142,0.08);
-    }
-    .chat-bubble { max-width: 70%; margin: 14px 0; padding: 18px; border-radius: 16px; line-height: 1.8; font-size: 16px; }
-    .chat-bubble.user { background: var(--bubble-user); align-self: flex-end; color: var(--dark);border-left: 5px solid var(--ai-border);  }
-    .chat-bubble.ai { background: var(--bubble-ai); align-self: flex-start; color: var(--main-purple); border-left: 5px solid var(--ai-border); }
-    .chat-input { display: flex; gap: 10px; }
-    .chat-input input { flex: 1; padding: 14px; border-radius: 10px; border: 1.5px solid #d6d3e0; font-size: 17px; background: var(--light); color: var(--dark); }
-    .chat-input button { padding: 14px 32px; border: none; border-radius: 10px; background: var(--button-bg); color: var(--button-text); font-size: 17px; cursor: pointer; transition: background 0.2s; }
-    .chat-input button:hover { background: var(--button-hover); }
-    .suggestions { margin-top: 14px; }
-    .suggestions button { margin-right: 10px; margin-bottom: 10px; padding: 10px 20px; border: none; border-radius: 8px; background: var(--suggestion-bg); color: var(--main-purple); cursor: pointer; font-size: 15px; transition: background 0.2s; border: 1px solid #d6d3e0; }
-    .suggestions button:hover { background: var(--suggestion-hover); }
-    .history-sidebar {
-      position: fixed;
-      top: 0;
-      right: -340px;
-      width: 340px;
-      height: 100vh;
-      background: #fff;
-      box-shadow: 2px 0 16px rgba(111,74,142,0.10);
-      z-index: 100;
-      transition: right 0.3s;
-      display: flex;
-      flex-direction: column;
-      border-top-right-radius: 24px;
-      border-bottom-right-radius: 24px;
-    }
-    .history-sidebar:not(.open) { right: -340px; }
-    .history-sidebar.open { right: 0; }
-    .history-sidebar .tabs { display: flex; border-bottom: 1.5px solid #eee; }
-    .history-sidebar .tabs button { flex: 1; padding: 18px 0; border: none; background: none; font-size: 17px; cursor: pointer; }
-    .history-sidebar .tabs button.active { color: var(--main-purple); border-bottom: 2.5px solid var(--main-purple); }
-    .history-sidebar .tabs button:last-child { flex: none; width: 44px; color: #888; font-size: 26px; }
-    .history-sidebar input { margin: 18px; padding: 10px; width: calc(100% - 36px); border-radius: 8px; border: 1.5px solid #d6d3e0; background: var(--light); color: var(--dark); }
-    .history-list { flex: 1; overflow-y: auto; padding: 0 18px 18px 18px; }
-    .history-item { padding: 14px; border-bottom: 1.5px solid #f0f0f0; color: var(--dark); cursor: pointer; border-radius: 6px; transition: background 0.2s; }
-    .history-item:hover { background: var(--main-bg); }
-    @media (max-width: 900px) {
-      .container { flex-direction: column; }
-      .sidebar { flex-direction: row; width: 100vw; height: 60px; left: 0; top: 0; bottom: auto; position: fixed; }
-      .main-content { left: 0; top: 60px; height: calc(100vh - 60px); padding: 10px; }
-      .chat-section { padding: 60px 10px 10px 10px; padding-bottom: 120px; }
-      .ai-bottom-bar { left: 0; right: 0; bottom: 0; width: 100%; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div class="container">
@@ -173,46 +17,46 @@
       </div>
     </div>
     <nav>
-      <button id="nav-home" class="active">首页</button>
-      <button id="nav-ai">AI懂法</button>
-      <button id="nav-code">法典/案例检索</button>
-      <button id="nav-contract">智能合同</button>
-      <button id="nav-doc">文书生成</button>
-      <button id="nav-quiz">法律答题</button>
-      <button id="nav-court">AI法庭</button>
+      <button id="nav-home" class="active"><img src="image/首页.png" alt="首页"> 首页</button>
+      <button id="nav-ai"><img src="image/AI懂法.png" alt="AI懂法"> AI懂法</button>
+      <button id="nav-contract"><img src="image/智能合同.png" alt="智能合同"> 智能合同</button>
+      <button id="nav-doc"><img src="image/文书生成.png" alt="文书生成"> 文书生成</button>
+      <button id="nav-quiz"><img src="image/法律答题.png" alt="法律答题"> 法律答题</button>
+      <button id="nav-court"><img src="image/AI法庭.png" alt="AI法庭"> AI法庭</button>
     </nav>
   </aside>
 
   <!-- 右侧主内容区 -->
   <main class="main-content">
+
     <div id="page-home">
       <div class="home-header">
         <h1>欢迎使用智能法律助手</h1>
         <p>一站式法律服务平台，助您轻松解决法律问题</p>
       </div>
       <div class="home-desc">
-        <p>点击左侧“AI懂法”可体验智能法律问答，后续将支持更多法律服务功能。</p>
+        <p>点击左侧"AI懂法"可体验智能法律问答，后续将支持更多法律服务功能。</p>
       </div>
     </div>
+
     <div id="page-ai" style="display:none;">
       <div class="ai-header">
         <h2>您好，我是您的AI法律助手</h2>
         <p>专注于法律领域的理解和推理，为您提供智能法律支持</p>
       </div>
-      <section class="chat-section" style="margin-top: 60px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end;">
-        <div class="chat-history" id="chatHistory" style="flex:1;"></div>
+      <section class="chat-section" style="margin-top: 60px; height: 100%; display: flex; flex-direction: column;">
+        <div class="chat-history" id="chatHistory" style="flex:1; min-height: 0;"></div>
         <div class="ai-bottom-bar">
           <div class="ai-toolbar" style="width:100%; display:flex; align-items:center; gap:16px; margin-bottom:10px;">
             <button class="history-float-btn" onclick="toggleHistorySidebar()" title="历史记录" style="position:static; width:40px; height:40px; min-width:40px; min-height:40px; box-shadow:none;">
-              <img src="https://img.icons8.com/ios-filled/50/ffffff/time-machine.png" alt="历史记录" style="width:24px; height:24px;" />
+              <span style="font-size:20px;">🕓</span>
             </button>
-            <button onclick="startNewConversation()" style="padding: 8px 18px; border-radius: 8px; border: none; background: var(--main-purple); color: #fff; font-size: 15px; cursor: pointer;">新一轮对话</button>
+            <button onclick="startNewConversation()" style="padding: 8px 18px; border-radius: 8px; border: none; background: var(--main-purple); color: #fff; font-size: 15px; cursor: pointer;">🔄 新一轮对话</button>
             <div style="position: relative;">
-              <button onclick="toggleModelMenu()" id="modelBtn" style="padding: 8px 18px; border-radius: 8px; border: none; background: var(--main-purple); color: #fff; font-size: 15px; cursor: pointer;">选择大模型</button>
+              <button onclick="toggleModelMenu()" id="modelBtn" style="padding: 8px 18px; border-radius: 8px; border: none; background: var(--main-purple); color: #fff; font-size: 15px; cursor: pointer;">🧠 选择大模型</button>
               <div id="modelMenu" style="display:none; position: absolute; top: 38px; left: 0; background: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; z-index: 20;">
                 <div onclick="selectModel('通义千问')" style="padding: 10px 18px; cursor: pointer;">通义千问</div>
                 <div onclick="selectModel('星火大模型')" style="padding: 10px 18px; cursor: pointer;">星火大模型</div>
-<!--                <div onclick="selectModel('文心一言')" style="padding: 10px 18px; cursor: pointer;">文心一言</div>-->
                 <div onclick="selectModel('智谱')" style="padding: 10px 18px; cursor: pointer;">智谱</div>
                 <div onclick="selectModel('deepseek')" style="padding: 10px 18px; cursor: pointer;">DeepSeek</div>
               </div>
@@ -220,8 +64,8 @@
             <span id="currentModel" style="color: var(--main-purple); font-size: 15px; margin-left: 8px;">当前模型：通义千问</span>
           </div>
           <div class="chat-input" style="width:100%;">
-            <input type="text" id="userInput" placeholder="请输入您的问题或指令..." onkeydown="if(event.key==='Enter'){sendQuestion();}" />
-            <button onclick="sendQuestion()">发送</button>
+            <input type="text" id="userInput" placeholder="请输入您的问题或指令..." />
+            <button onclick="sendQuestion()">📤 发送</button>
           </div>
           <div class="suggestions" style="margin-bottom: 8px;">
             <button onclick="fillAndSend('朋友借了我10万块钱，约定两个月归还且不需要利息。已经半年过去了，对方还没还钱怎么办？')">朋友借了我10万块钱...</button>
@@ -239,132 +83,37 @@
         <div class="history-list" id="historyList"></div>
       </aside>
     </div>
-    <div id="page-code" style="display:none;"><div style="padding:40px;color:#807b9e;">法典/案例检索（开发中）</div></div>
-    <div id="page-contract" style="display:none;"><div style="padding:40px;color:#807b9e;">智能合同（开发中）</div></div>
+
+    <div id="page-contract" style="display:none;">
+      <div class="contract-review-center-wrapper" style="display:flex;justify-content:center;align-items:center;min-height:calc(100vh - 120px);">
+        <div class="contract-review-container" style="background:#fff;border-radius:12px;padding:40px 32px 32px 32px;box-shadow:0 2px 8px rgba(0,0,0,0.05);max-width:700px;width:100%;min-height:500px;display:flex;flex-direction:column;align-items:center;">
+          <h2 style="color:#6f4a8e;margin-bottom:32px;margin-top:0;text-align:center;width:100%;font-size:32px;font-weight:bold;">合同智能审查</h2>
+          <div style="flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div class="upload-section" style="margin-bottom:24px;width:100%;display:flex;flex-direction:column;align-items:center;">
+              <input type="file" id="contractFile" accept=".txt,.doc,.docx,.pdf" style="display:none" />
+              <div class="upload-box" id="uploadBox" style="border:2px dashed #a0a0ff;border-radius:8px;padding:40px 0;width:100%;max-width:420px;text-align:center;color:#888;cursor:pointer;margin-bottom:16px;">
+                <span id="uploadText">点击或拖拽上传合同文件</span>
+              </div>
+              <button id="reviewBtn" disabled style="background:#4f7cff;color:#fff;border:none;border-radius:6px;padding:10px 32px;font-size:16px;cursor:pointer;width:180px;">生成审查建议</button>
+            </div>
+            <div id="reviewResult" class="review-result" style="margin-top:24px;background:#f7f8fa;border-radius:8px;padding:24px;min-height:80px;color:#222;width:100%;max-width:420px;text-align:left;"></div>
+          </div>
+          <div id="contractHistory" style="margin-top:36px;width:100%;max-width:420px;">
+            <h3 style="color:#807b9e;font-size:18px;margin-bottom:12px;margin-top:0;">历史记录</h3>
+            <ul id="historyListContract" style="list-style:none;padding:0;margin:0;"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="page-doc" style="display:none;"><div style="padding:40px;color:#807b9e;">文书生成（开发中）</div></div>
     <div id="page-quiz" style="display:none;"><div style="padding:40px;color:#807b9e;">法律答题（开发中）</div></div>
     <div id="page-court" style="display:none;"><div style="padding:40px;color:#807b9e;">AI法庭（开发中）</div></div>
   </main>
 </div>
-<script>
-// SPA导航切换
-const navs = [
-  {btn: 'nav-home', page: 'page-home'},
-  {btn: 'nav-ai', page: 'page-ai'},
-  {btn: 'nav-code', page: 'page-code'},
-  {btn: 'nav-contract', page: 'page-contract'},
-  {btn: 'nav-doc', page: 'page-doc'},
-  {btn: 'nav-quiz', page: 'page-quiz'},
-  {btn: 'nav-court', page: 'page-court'}
-];
-navs.forEach(({btn, page}) => {
-  document.getElementById(btn).onclick = function() {
-    navs.forEach(({btn, page}) => {
-      document.getElementById(btn).classList.remove('active');
-      document.getElementById(page).style.display = 'none';
-    });
-    this.classList.add('active');
-    document.getElementById(page).style.display = '';
-  };
-});
 
-// AI懂法历史侧栏逻辑
-function toggleHistorySidebar() {
-  document.getElementById('historySidebar').classList.add('open');
-  renderHistory();
-}
-function closeHistorySidebar() {
-  document.getElementById('historySidebar').classList.remove('open');
-}
-function getHistory() {
-  return JSON.parse(localStorage.getItem('ai_legal_history') || '[]');
-}
-function saveHistory(history) {
-  localStorage.setItem('ai_legal_history', JSON.stringify(history));
-}
-function addToHistory(item) {
-  const history = getHistory();
-  history.unshift(item);
-  saveHistory(history);
-}
-function renderHistory() {
-  const list = document.getElementById('historyList');
-  const history = getHistory();
-  const search = document.getElementById('historySearch').value.trim();
-  list.innerHTML = '';
-  history.filter(h => !search || h.question.includes(search)).forEach(h => {
-    const div = document.createElement('div');
-    div.className = 'history-item';
-    div.innerText = h.question;
-    div.onclick = () => {
-      document.getElementById('userInput').value = h.question;
-      closeHistorySidebar();
-    };
-    list.appendChild(div);
-  });
-}
-document.getElementById('historySearch').oninput = renderHistory;
-function fillAndSend(text) {
-  document.getElementById('userInput').value = text;
-  sendQuestion();
-}
-let currentModel = '通义千问'; // 统一用后端识别的英文key
-function toggleModelMenu() {
-  const menu = document.getElementById('modelMenu');
-  menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
-}
-function selectModel(model) {
-  currentModel = model;
-  // 显示友好中文名
-  let showName = model;
-  if(model==='通义千问') showName='通义千问';
-  if(model==='星火大模型') showName='星火大模型';
-  // if(model==='文心一言') showName='文心一言';
-  if(model==='deepseek') showName='DeepSeek';
-  if(model==='智谱') showName='智谱';
-  document.getElementById('currentModel').innerText = '当前模型：' + showName;
-  document.getElementById('modelMenu').style.display = 'none';
-}
-function sendQuestion() {
-  const input = document.getElementById('userInput');
-  const question = input.value.trim();
-  if (!question) return;
-  appendChatBubble('user', question);
-  input.value = '';
-  fetch('http://localhost:8000/ai_legal_qa', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, model: currentModel,session_id: "test_session_001" })
-  })
-  .then(res => res.json())
-  .then(data => {
-    const answer =
-      `<strong>法律条文依据：</strong><br>${data.law}<br><br>` +
-      `<strong>参考案例：</strong><br>${data.case}<br><br>` +
-      `<strong>实际解决办法：</strong><br>${data.solution}`;
-    appendChatBubble('ai', answer);
-    addToHistory({ question, answer: data });
-  })
-  .catch(() => {
-    appendChatBubble('ai', '抱歉，服务器暂时无法响应。');
-  });
-}
-function appendChatBubble(role, text) {
-  const chat = document.getElementById('chatHistory');
-  const div = document.createElement('div');
-  div.className = 'chat-bubble ' + role;
-  div.innerHTML = text.replace(/\n/g, '<br>');
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-}
-function startNewConversation() {
-  document.getElementById('chatHistory').innerHTML = '';
-}
-document.body.addEventListener('click', function(e) {
-  if (!e.target.closest('#modelBtn') && !e.target.closest('#modelMenu')) {
-    document.getElementById('modelMenu').style.display = 'none';
-  }
-});
-</script>
+<!-- 引入JavaScript文件 -->
+<script src="js/app.js"></script>
+<script src="js/ai-legal.js"></script>
+<script src="js/contract.js"></script>
 </body>
-</html>
+</html> 
