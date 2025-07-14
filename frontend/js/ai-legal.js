@@ -78,7 +78,8 @@ function sendQuestion() {
     const answer =
       `<strong>法律条文依据：</strong><br>${data.law}<br><br>` +
       `<strong>参考案例：</strong><br>${data.case}<br><br>` +
-      `<strong>实际解决办法：</strong><br>${data.solution}`;
+      `<strong>实际解决办法：</strong><br>${data.solution}<br><br>`+
+      `<strong>总结回答：</strong><br>${data.summary}`;
     appendChatBubble('ai', answer);
     addToHistory({ question, answer: data });
   })
@@ -98,6 +99,10 @@ function appendChatBubble(role, text) {
 
 function startNewConversation() {
   document.getElementById('chatHistory').innerHTML = '';
+  fetch('http://localhost:8000/reset_ai_memory', { method: 'POST' })
+  .then(() => {
+    // 可以在这里解锁输入框，允许用户输入新问题
+  });
 }
 
 // 初始化AI懂法功能
