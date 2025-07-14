@@ -5,10 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de9b7a0d-773f-40de-9b94-dba478f7dd6f" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ai_legal_history.db" beforeDir="false" afterPath="$PROJECT_DIR$/ai_legal_history.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/app/services/langchain_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/services/langchain_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/git_upload_steps.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/image/文书生成.png" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/image/文书生成.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/js/ai-legal.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/js/ai-legal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/js/contract.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/js/contract.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,17 +58,21 @@
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lalalala/Desktop/workspace/pycharm workspace/law&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CodeWithMe&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\lalalala\Desktop\workspace\pycharm workspace\law\frontend" />
+      <recent name="C:\Users\lalalala\Desktop\workspace\pycharm workspace\law\frontend\js" />
+      <recent name="C:\Users\lalalala\Desktop\workspace\pycharm workspace\law\backend\app\services" />
       <recent name="C:\Users\lalalala\Desktop\workspace\pycharm workspace\law\backend\app" />
       <recent name="C:\Users\lalalala\Desktop\workspace\pycharm workspace\law\backend" />
     </key>
@@ -69,8 +80,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PY-251.26927.74" />
-        <option value="bundled-python-sdk-657d8234b839-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26927.74" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PY-251.26927.90" />
+        <option value="bundled-python-sdk-41e8cd69c857-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26927.90" />
       </set>
     </attachedChunks>
   </component>
@@ -83,10 +94,34 @@
       <updated>1752197809192</updated>
       <workItem from="1752197810364" duration="2385000" />
       <workItem from="1752287937636" duration="4582000" />
+      <workItem from="1752300345183" duration="454000" />
+      <workItem from="1752302919728" duration="44000" />
+      <workItem from="1752303017928" duration="231000" />
+      <workItem from="1752304136656" duration="13000" />
+      <workItem from="1752304176211" duration="658000" />
+      <workItem from="1752304855732" duration="343000" />
+      <workItem from="1752305224431" duration="794000" />
+      <workItem from="1752306167143" duration="5568000" />
+      <workItem from="1752311827334" duration="397000" />
+      <workItem from="1752315614405" duration="529000" />
+      <workItem from="1752316267219" duration="5121000" />
+      <workItem from="1752321479431" duration="1454000" />
+      <workItem from="1752454841771" duration="3495000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

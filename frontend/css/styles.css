@@ -1,17 +1,17 @@
 :root {
-  --main-purple: #6f4a8e;
+  --main-purple: hsl(233, 40%, 50%);
   --secondary-purple: #807b9e;
   --dark: #040404;
   --light: #ebebeb;
-  --sidebar-bg: #6f4a8e;
-  --sidebar-hover: #807b9e;
+  --sidebar-bg: #444ba5;
+  --sidebar-hover: #140f77;
   --sidebar-active: #807b9e;
   --main-bg: #ffffff;
   --bubble-user: #f0f0f0;
   --bubble-ai: #ede7f6;
   --ai-border: #807b9e;
-  --header-text: #6f4a8e;
-  --button-bg: #6f4a8e;
+  --header-text: #3c4ddd;
+  --button-bg: rgba(0, 4, 110, 0.85);
   --button-hover: #807b9e;
   --button-text: #fff;
   --suggestion-bg: #ebebeb;
@@ -26,7 +26,7 @@ html, body {
 body { 
   margin: 0; 
   font-family: 'Segoe UI', Arial, sans-serif; 
-  background: var(--main-bg); 
+  background: #f6faff; 
   height: 100vh; 
   min-height: 0; 
 }
@@ -39,9 +39,9 @@ body {
 }
 
 .sidebar {
-  width: 220px;
-  background: var(--sidebar-bg);
-  color: #fff;
+  width: 300px;
+  background: #fff;
+  color: #0066cc;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -58,26 +58,31 @@ body {
   width: 100%; 
   display: flex; 
   align-items: center; 
-  justify-content: space-between; 
+  justify-content: center; 
   padding: 24px 20px 16px 20px; 
 }
 
 .logo { 
   display: flex; 
   align-items: center; 
+  justify-content: flex-start;
   cursor: pointer; 
+  width: 100%;
+  padding-left: 20px;
 }
 
 .logo img { 
   width: 36px; 
   height: 36px; 
   margin-right: 10px; 
+  filter: none;
 }
 
 .logo span { 
   font-size: 22px; 
   font-weight: bold; 
   letter-spacing: 1px; 
+  color: #0066cc;
 }
 
 .sidebar nav { 
@@ -85,18 +90,18 @@ body {
   margin-top: 24px; 
 }
 
-.sidebar button { 
-  width: 100%;
-  background: var(--sidebar-bg); 
-  border: none; 
-  color: #fff; 
-  padding: 20px 0 20px 40px; 
-  font-size: 20px; 
-  cursor: pointer; 
-  text-align: left; 
-  transition: background 0.2s, color 0.2s; 
-  border-radius: 24px 0 0 24px; 
-  margin-bottom: 6px; 
+.sidebar button {
+  width: 80%;
+  margin: 0 auto 6px auto;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid transparent;
+  color: #0066cc;
+  padding: 20px 0 20px 32px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s, color 0.2s, border 0.2s;
   position: relative;
   display: flex;
   align-items: center;
@@ -106,41 +111,54 @@ body {
   width: 28px;
   height: 28px;
   margin-right: 16px;
-  filter: brightness(0) invert(1);
+  filter: none;
 }
 
 .sidebar button.active img {
   filter: none;
 }
 
-.sidebar button.active { 
-  background: #fff; 
-  color: var(--main-purple); 
-  border: none;
+.sidebar button.active {
+  background: #0066cc;
+  color: #fff;
+  border: 2px solid #0066cc;
+  position: relative;
 }
 
-.sidebar button:hover { 
-  background: #f8f8f8;
-  color: var(--main-purple);
-  border: none;
+.sidebar button.active::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 25%;
+  width: 4px;
+  height: 50%;
+  background: #0066cc;
+  border-radius: 4px;
+  display: block;
+}
+
+.sidebar button:hover {
+  background: #f0f8ff;
+  color: #0066cc;
+  border: 2px solid #0066cc;
 }
 
 .sidebar button.active:hover { 
-  background: #f8f8f8;
-  color: var(--main-purple);
-  border: none;
+  background: #0066cc;
+  color: #fff;
+  border: 2px solid #0066cc;
 }
 
 .main-content {
   flex: 1;
-  background: var(--main-bg);
+  background: #f6faff;
   border-radius: 0;
   padding: 32px;
   box-shadow: none;
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 220px;
+  left: 300px;
   top: 0;
   right: 0;
   bottom: 0;
@@ -235,7 +253,7 @@ body {
   position: relative;
   height: 100%;
   min-height: 0;
-  padding: 60px 40px 40px 40px;
+  padding: 60px 40px 40px 100px;
 }
 
 .chat-history {
@@ -269,18 +287,53 @@ body {
   font-size: 16px; 
 }
 
-.chat-bubble.user { 
-  background: var(--bubble-user); 
-  align-self: flex-end; 
-  color: var(--dark);  
-  border-left: 5px solid var(--ai-border);
+.chat-bubble-wrapper.user {
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+.chat-bubble-wrapper.ai {
+  justify-content: flex-start;
+  margin-bottom: 10px;
 }
 
-.chat-bubble.ai { 
-  background: var(--bubble-ai); 
-  align-self: flex-start; 
-  color: var(--main-purple); 
-  border-left: 5px solid var(--ai-border); 
+.chat-bubble.user {
+  background: #e3f0ff;
+  align-self: flex-end;
+  color: #155fa0;
+  margin-left: 40px;
+}
+
+.chat-bubble.ai {
+  background: #fff;
+  align-self: flex-start;
+  color: #1e3a8a;
+  margin-right: 40px;
+}
+
+/* 头像样式和内容样式保持不变 */
+.chat-bubble-wrapper.user .chat-avatar {
+  margin-left: 28px;
+  margin-right: 0;
+  vertical-align: top;
+}
+.chat-bubble-wrapper.ai .chat-avatar {
+  margin-right: 28px;
+  margin-left: 0;
+  vertical-align: top;
+}
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.chat-bubble-content {
+  display: inline-block;
+  vertical-align: top;
+  max-width: calc(100% - 54px);
+  word-break: break-all;
 }
 
 .chat-input { 
@@ -288,14 +341,21 @@ body {
   gap: 10px; 
 }
 
-.chat-input input { 
-  flex: 1; 
-  padding: 14px; 
-  border-radius: 10px; 
-  border: 1.5px solid #d6d3e0; 
-  font-size: 17px; 
-  background: var(--light); 
-  color: var(--dark); 
+.chat-input input {
+  background: #fff;
+  border: 2px solid #a084ee;
+  color: #222;
+  font-size: 17px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  outline: none;
+  width: calc(100% - 120px);
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+
+.chat-input input:focus {
+  border: 2.5px solid #a084ee;
 }
 
 .chat-input button { 
@@ -307,6 +367,8 @@ body {
   font-size: 17px; 
   cursor: pointer; 
   transition: background 0.2s; 
+  min-width: 100px;
+  flex-shrink: 0;
 }
 
 .chat-input button:hover { 
@@ -317,22 +379,22 @@ body {
   margin-top: 14px; 
 }
 
-.suggestions button { 
-  margin-right: 10px; 
-  margin-bottom: 10px; 
-  padding: 10px 20px; 
-  border: none; 
-  border-radius: 8px; 
-  background: var(--suggestion-bg); 
-  color: var(--main-purple); 
-  cursor: pointer; 
-  font-size: 15px; 
-  transition: background 0.2s; 
-  border: 1px solid #d6d3e0; 
+.suggestions button {
+  background: #fff;
+  border: none !important;
+  color: #6f4a8e;
+  border-radius: 8px;
+  padding: 10px 18px;
+  margin-right: 10px;
+  margin-bottom: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
-
-.suggestions button:hover { 
-  background: var(--suggestion-hover); 
+.suggestions button:hover {
+  background: #f6faff;
+  color: #4b2e83;
+  border: none !important;
 }
 
 .history-sidebar {
@@ -443,4 +505,13 @@ body {
   .ai-bottom-bar { 
     width: 100%; 
   }
+}
+
+/* 合同历史侧边栏样式 */
+.contract-history-sidebar.open { 
+  right: 0; 
+}
+
+.contract-history-float-btn:hover { 
+  background: var(--button-hover); 
 } 

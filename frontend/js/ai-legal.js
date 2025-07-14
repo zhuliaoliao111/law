@@ -78,9 +78,7 @@ function sendQuestion() {
     const answer =
       `<strong>法律条文依据：</strong><br>${data.law}<br><br>` +
       `<strong>参考案例：</strong><br>${data.case}<br><br>` +
-      `<strong>实际解决办法：</strong><br>${data.solution}<br><br>` +
-      `<strong>AI回答总结：</strong><br>${data.summary}`
-    ;
+      `<strong>实际解决办法：</strong><br>${data.solution}`;
     appendChatBubble('ai', answer);
     addToHistory({ question, answer: data });
   })

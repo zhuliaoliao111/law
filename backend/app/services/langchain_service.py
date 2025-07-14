@@ -1,12 +1,15 @@
-import openai
-import httpx
 import sqlite3
 import os
 from typing import Optional, List, Dict
-
-DB_PATH = os.path.join(os.path.dirname(__file__), '../../../ai_legal_history.db')
+import httpx
+from pathlib import Path
+import logging
+import uuid
 #python -m uvicorn app.main:app --reload
+
 # 数据库初始化
+DB_PATH = Path(__file__).parent.parent.parent.parent / 'ai_legal_history.db'
+logging.debug(f"数据库路径：{DB_PATH}")
 conn = sqlite3.connect(DB_PATH)
 c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS chat_history (
@@ -20,6 +23,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS chat_history (
 conn.commit()
 conn.close()
 
+# 定义MODEL_CONFIG字典
 MODEL_CONFIG = {
     '通义千问': {
         'api_key': 'sk-b6e2d7265f074523b730f7fcd4d9901c',
@@ -51,7 +55,7 @@ MODEL_CONFIG = {
 
 # 1. 保存历史
 def save_history(session_id: str, model: str, question: str, answer: str):
-    # 将本轮问答存入数据库，session_id用于标识同一会话
+    logging.debug(f"保存数据：session_id={session_id}, model={model}, question={question}")
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('INSERT INTO chat_history (session_id, model, question, answer) VALUES (?, ?, ?, ?)',
@@ -61,7 +65,6 @@ def save_history(session_id: str, model: str, question: str, answer: str):
 
 # 2. 获取历史
 def get_history(session_id: str) -> List[Dict]:
-    # 查询数据库，获取该session_id的所有历史问答
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('SELECT question, answer, model, timestamp FROM chat_history WHERE session_id=? ORDER BY id', (session_id,))
@@ -69,25 +72,28 @@ def get_history(session_id: str) -> List[Dict]:
     conn.close()
     return [{'question': r[0], 'answer': r[1], 'model': r[2], 'timestamp': r[3]} for r in rows]
 
-def ai_legal_qa_function(question: str, model: str = 'gpt-3.5', session_id: Optional[str] = None) -> dict:
-    """
-    多模型AI问答，支持多轮对话和历史记录。
-    """
+
+def ai_legal_qa_function(question: str, model: str = 'qwen-turbo', session_id: Optional[str] = None) -> dict:
+    if session_id is None:
+        session_id = str(uuid.uuid4())
+    logging.debug(f"[DEBUG] 收到的 session_id: {session_id}")
     import re
     history = get_history(session_id) if session_id else []
+
+    #构建提示词
     # 3. 构造prompt时，将最近历史问答内容拼接到prompt前面
     history_prompt = ''
     if history:
-        for idx, h in enumerate(history[-3:]):  # 只取最近3轮，防止prompt过长
+        for idx, h in enumerate(history[-3:]):
             history_prompt += f"\n历史问题{idx+1}: {h['question']}\n历史回答{idx+1}: {h['answer']}\n"
     prompt = (
-        f"请你作为专业法律助手，必须严格参考用户的历史提问，结合历史问题的关键词，再结合当前问题，严格按照以下格式分三部分输出：\n"
+        f"请你作为专业法律助手，严格参考用户的历史提问，结合历史问题的关键词，再结合当前问题，严格按照以下格式分四部分输出：\n"
         f"{history_prompt}"
         f"当前问题：{question}\n"
         f"1. 法律条文依据：\n[在这里详细列出相关的法律条文和依据]\n\n"
         f"2. 参考案例：\n[在这里提供相关的参考案例]\n\n"
         f"3. 实际解决办法：\n[在这里提供具体的解决步骤和建议]\n"
-        f"4. 总结回答：\n[在这里总结总体的回答，包括法律条文依据、参考案例和实际解决办法，并针对问题给出具体的回答]\n"
+        f"4. 总结回答：\n[在这里总结总体的回答，包括法律条文依据、参考案例和实际解决办法，并针对问���给出具体的回答]\n"
     )
     answer = ''
     if model == '通义千问':
@@ -171,6 +177,7 @@ def ai_legal_qa_function(question: str, model: str = 'gpt-3.5', session_id: Opti
             answer = f"deepseek接口异常: {e}"
     else:
         answer = f"暂未实现对{model}的API集成。"
+        
     # 自动分段解析
     def parse_answer(ans):
         law, case, solution, summary = '', '', '', ''
@@ -225,7 +232,7 @@ def ai_legal_qa_function(question: str, model: str = 'gpt-3.5', session_id: Opti
             case_match = re.search(r'参考案例[:：]?\s*(.*?)(实际解决办法[:：]?|总结回答[:：]?|$)', ans, re.S)
             if case_match:
                 case = case_match.group(1).strip()
-            solution_match = re.search(r'实际解决办法[:：]?\s*(.*?)(总结回答[:：]?|$)', ans, re.S)
+            solution_match = re.search(r'实际解决��法[:：]?\s*(.*?)(总结回答[:：]?|$)', ans, re.S)
             if solution_match:
                 solution = solution_match.group(1).strip()
             summary_match = re.search(r'总结回答[:：]?\s*(.*)', ans, re.S)
