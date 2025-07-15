@@ -1,17 +1,11 @@
-fastapi
-uvicorn
-qdrant-client
-python-multipart
-langchain
-langchain-community
-langchain-core
-langchain-openai
-pydantic
-openai
-python-dotenv
-sentence-transformers
-httpx
-requests
-sqlite-utils
-
-
+   fastapi
+   uvicorn
+   pydantic
+   openai
+   qdrant-client
+   python-multipart
+   python-dotenv
+   langchain
+   langchain-community
+   langchain-core
+   langchain-openai
