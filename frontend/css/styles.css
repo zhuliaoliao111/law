@@ -278,36 +278,63 @@ body {
   margin-top: auto;
 }
 
-.chat-bubble { 
-  max-width: 70%; 
-  margin: 14px 0; 
-  padding: 18px; 
-  border-radius: 16px; 
-  line-height: 1.8; 
-  font-size: 16px; 
+/* 聊天气泡外层容器，头像和气泡横向排列，上边界对齐 */
+.chat-bubble-wrapper {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 .chat-bubble-wrapper.user {
+  flex-direction: row;
   justify-content: flex-end;
-  margin-bottom: 10px;
 }
+
 .chat-bubble-wrapper.ai {
+  flex-direction: row;
   justify-content: flex-start;
-  margin-bottom: 10px;
+}
+
+/* 头像样式 */
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 0 0 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.chat-bubble-wrapper.ai .chat-avatar {
+  margin: 0 12px 0 0;
+}
+
+/* 气泡内容样式 */
+.chat-bubble {
+  max-width: 70%;
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-size: 16px;
+  line-height: 1.8;
+  word-break: break-all;
+  box-sizing: border-box;
 }
 
 .chat-bubble.user {
   background: #e3f0ff;
-  align-self: flex-end;
   color: #155fa0;
-  margin-left: 40px;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
 }
 
 .chat-bubble.ai {
   background: #fff;
-  align-self: flex-start;
   color: #1e3a8a;
-  margin-right: 40px;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
 }
 
 /* 头像样式和内容样式保持不变 */
