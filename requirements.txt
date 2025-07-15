@@ -10,4 +10,5 @@
    langchain-core
    langchain-openai
    docx2txt
+   PyPDF2
    #sentence-transformers
