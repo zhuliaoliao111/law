@@ -90,10 +90,36 @@ function sendQuestion() {
 
 function appendChatBubble(role, text) {
   const chat = document.getElementById('chatHistory');
-  const div = document.createElement('div');
-  div.className = 'chat-bubble ' + role;
-  div.innerHTML = text.replace(/\n/g, '<br>');
-  chat.appendChild(div);
+  // 创建外层容器
+  const wrapper = document.createElement('div');
+  wrapper.className = 'chat-bubble-wrapper ' + role;
+
+  // 创建头像
+  const avatar = document.createElement('img');
+  avatar.className = 'chat-avatar';
+  if (role === 'user') {
+    avatar.src = 'image/用户.png';
+    avatar.alt = '用户头像';
+  } else {
+    avatar.src = 'image/律师.png';
+    avatar.alt = '律师头像';
+  }
+
+  // 创建气泡内容
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble ' + role;
+  bubble.innerHTML = text.replace(/\n/g, '<br>');
+
+  // 用户：气泡在左，头像在右；AI：头像在左，气泡在右
+  if (role === 'user') {
+    wrapper.appendChild(bubble);
+    wrapper.appendChild(avatar);
+  } else {
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(bubble);
+  }
+
+  chat.appendChild(wrapper);
   chat.scrollTop = chat.scrollHeight;
 }
 
