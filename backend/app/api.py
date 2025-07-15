@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Body
 from .services.ai_chat import ai_legal_qa_function, reset_ai_legal_memory
 from .services.document_service import DocumentService
+from .services.smart_contracts import save_upload_file, extract_contract_content, analyze_contract_content_with_llm
 from .models.legal_doc_models import LawsuitRequest
 from typing import Optional
+from fastapi import UploadFile, File, HTTPException
 import uuid
 
 router = APIRouter()
@@ -122,3 +124,21 @@ def generate_defense(request: LawsuitRequest):
 # def get_ai_legal_history(session_id: str):
 #     from app.services.langchain_service import get_history
 #     return get_history(session_id)
+
+@router.post("/smart_contracts/upload/")
+async def upload_contract_file(file: UploadFile = File(...)):
+    try:
+        file_id, file_path = save_upload_file(file)
+        return {"file_id": file_id, "file_name": file.filename, "file_path": file_path}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"文件上传失败: {str(e)}")
+
+@router.post("/smart_contracts/analyze_contract/")
+async def analyze_contract(file: UploadFile = File(...)):
+    # 保存文件
+    file_id, file_path = save_upload_file(file, upload_dir="documents")
+    # 提取内容
+    content = extract_contract_content(file_path)
+    # 调用大模型分析
+    result = analyze_contract_content_with_llm(content)
+    return result
