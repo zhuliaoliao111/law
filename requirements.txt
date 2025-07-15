@@ -9,4 +9,5 @@
    langchain-community
    langchain-core
    langchain-openai
+   docx2txt
    #sentence-transformers
