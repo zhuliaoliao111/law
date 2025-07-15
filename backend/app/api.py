@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Body
+from .services.law_search import search_law
 from .services.ai_chat import ai_legal_qa_function, reset_ai_legal_memory
 from .services.document_service import DocumentService
 from .services.smart_contracts import save_upload_file, extract_contract_content, analyze_contract_content_with_llm
@@ -142,3 +143,8 @@ async def analyze_contract(file: UploadFile = File(...)):
     # 调用大模型分析
     result = analyze_contract_content_with_llm(content)
     return result
+
+@router.post("/law_search")
+def law_search_api(query: str = Body(..., embed=True)):
+    results = search_law(query)
+    return {"results": results}
