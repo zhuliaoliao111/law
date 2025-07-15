@@ -25,20 +25,48 @@
       <button id="nav-court"><img src="image/AI法庭.png" alt="AI法庭"> AI法庭</button>
     </nav>
     <div style="text-align: center; margin-top: 120px; margin-left: 20px;">
-
+      <img src="image/侧栏.png" alt="侧栏装饰" style="max-width: 80%; height: auto; display: block; margin: 0 auto;">
     </div>
   </aside>
 
   <!-- 右侧主内容区 -->
   <main class="main-content">
-
     <div id="page-home">
-      <div class="home-header">
-        <h1>欢迎使用智能法律助手</h1>
-        <p>一站式法律服务平台，助您轻松解决法律问题</p>
+      <div class="home-header" style="display: flex; align-items: flex-start; justify-content: flex-start; padding: 40px 40px 0 40px;">
+        <div style="flex:1; max-width: 520px;">
+          <div class="law-search-tabs">
+            <span class="law-search-tab active" data-type="all">关键词</span>
+            <span class="law-search-tab" data-type="law">法律</span>
+            <span class="law-search-tab" data-type="regulation">法规</span>
+            <span class="law-search-tab" data-type="case">案例</span>
+          </div>
+          <div class="law-search-bar modern">
+            <input type="text" id="law-search-input" placeholder="请输入您想查询的关键词" />
+            <button id="law-search-btn">搜索</button>
+          </div>
+        </div>
       </div>
-      <div class="home-desc">
-        <p>点击左侧"AI懂法"可体验智能法律问答，后续将支持更多法律服务功能。</p>
+      <div id="law-card-search-result" style="display:none;">
+        <div class="law-card" style="width:100%;max-width:900px;margin:0 auto;">
+          <div class="law-card-title">检索结果</div>
+          <div class="law-card-list" id="search-result-list"></div>
+        </div>
+      </div>
+      <div id="law-card-multi">
+        <div class="law-card-section">
+          <div class="law-card" id="card-new-laws">
+            <div class="law-card-title">法律</div>
+            <div class="law-card-list" id="list-new-laws"></div>
+          </div>
+          <div class="law-card" id="card-new-regulations">
+            <div class="law-card-title">法规</div>
+            <div class="law-card-list" id="list-new-regulations"></div>
+          </div>
+          <div class="law-card" id="card-new-cases">
+            <div class="law-card-title">案例</div>
+            <div class="law-card-list" id="list-new-cases"></div>
+          </div>
+        </div>
       </div>
     </div>
 
