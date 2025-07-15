@@ -9,6 +9,9 @@ langchain-openai
 pydantic
 openai
 python-dotenv
-
+sentence-transformers
+httpx
+requests
+sqlite-utils
 
 
