@@ -1,18 +1,16 @@
 fastapi
 uvicorn
+qdrant-client
+python-multipart
 langchain
 langchain-community
 langchain-core
 langchain-openai
 pydantic
 openai
-httpx
-requests
-sqlite-utils
-qdrant-client
-sentence-transformers
 python-dotenv
-python-multipart
+import os
+app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "../frontend")), name="static")
 
 
 

@@ -6,8 +6,8 @@ from typing import Dict
 class DocumentService:
     def __init__(self):
         self.template_service = TemplateService()
-        # 硬编码API密钥（替换为你的实际密钥）
-        self.api_key = "sk-5aa7547800eb424599bce554bd52c3d9"  # 请替换为真实密钥
+        # 从环境变量读取API密钥，避免硬编码
+        self.api_key = os.environ.get("OPENAI_API_KEY", "")
         self.client = OpenAI(
             api_key=self.api_key,
             base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"

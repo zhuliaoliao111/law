@@ -68,7 +68,7 @@ function sendQuestion() {
   if (!question) return;
   appendChatBubble('user', question);
   input.value = '';
-  fetch('http://localhost:8000/ai_legal_qa', {
+  fetch('/ai_legal_qa', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ question, model: currentModel })
@@ -99,7 +99,7 @@ function appendChatBubble(role, text) {
 
 function startNewConversation() {
   document.getElementById('chatHistory').innerHTML = '';
-  fetch('http://localhost:8000/reset_ai_memory', { method: 'POST' })
+  fetch('/reset_ai_memory', { method: 'POST' })
   .then(() => {
     // 可以在这里解锁输入框，允许用户输入新问题
   });

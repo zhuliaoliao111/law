@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Body
-from .services.law_search import search_law
-from .services.ai_chat import ai_legal_qa_function, reset_ai_legal_memory
-from .services.document_service import DocumentService
-from .services.smart_contracts import save_upload_file, extract_contract_content, analyze_contract_content_with_llm
-from .models.legal_doc_models import LawsuitRequest
+from backend.app.services.law_search import search_law
+from backend.app.services.ai_chat import ai_legal_qa_function, reset_ai_legal_memory
+from backend.app.services.document_service import DocumentService
+from backend.app.services.smart_contracts import save_upload_file, extract_contract_content, analyze_contract_content_with_llm
+from backend.app.models.legal_doc_models import LawsuitRequest
 from typing import Optional
 from fastapi import UploadFile, File, HTTPException
 import uuid

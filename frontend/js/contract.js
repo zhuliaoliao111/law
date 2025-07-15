@@ -239,7 +239,7 @@ function initContract() {
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
         
-        const res = await fetch('http://localhost:8000/smart_contracts/analyze_contract/', {
+        const res = await fetch('/smart_contracts/analyze_contract/', {
           method: 'POST',
           body: formData
         });
