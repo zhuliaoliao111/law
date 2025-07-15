@@ -19,11 +19,14 @@ app.add_middleware(
 app.include_router(router)
 
 #云部署添加
-from fastapi.staticfiles import StaticFiles
 import os
+from fastapi.staticfiles import StaticFiles
 from qdrant_client import QdrantClient
-# 挂载前端静态文件
-app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.abspath(os.path.join(BASE_DIR, "../frontend"))
+if os.path.exists(FRONTEND_DIR):
+    app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 # Qdrant 客户端
 qdrant_client = QdrantClient(
     url=os.getenv("QDRANT_URL"),
