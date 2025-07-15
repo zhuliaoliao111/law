@@ -9,4 +9,4 @@
    langchain-community
    langchain-core
    langchain-openai
-   sentence-transformers
+   #sentence-transformers
