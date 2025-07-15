@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .api import router
 #git add .
 #git commit -m "XXXXX"
+#git remote set-url origin https://github.com/agaric-L/law.git
 #git push -u origin master
 
 app = FastAPI()

@@ -62,7 +62,7 @@ def extract_contract_content(file_path: str) -> str:
 
 def analyze_contract_content_with_llm(content: str, model: str = "通义千问") -> Dict:
     """调用大模型分析合同内容，返回结构化结果，调用方式与ai_chat.py一致"""
-    prompt = f"请分析以下合同内容，并以如下标准JSON格式返回：\n\n{content}\n\n返回格式示例：\n{{\n  \"合同摘要\": {{\n    \"借款人\": \"张三\",\n    \"出借人\": \"李四\",\n    \"借款金额\": \"1000元\",\n    \"借款期限\": \"一年\",\n    \"还款时间\": \"一年后\"\n  }},\n  \"潜在风险条款\": [\n    {{\n      \"风险类型\": \"利息约定不明确\",\n      \"描述\": \"合同未明确约定借款利息，可能引发争议。\"\n    }},\n    {{\n      \"风险类型\": \"还款方式缺失\",\n      \"描述\": \"未明确还款方式，可能导致还款凭证缺失风险。\"\n    }}\n  ]\n}}\n字段全部用中文，且不要返回markdown、代码块或字符串化JSON。"
+    prompt = f"请分析以下合同内容，并以如下标准JSON格式返回：\n\n{content}\n\n返回格式示例：\n{{\n  \"合同摘要\": \n  \"潜在风险条款\": \n}}\n字段全部用中文，且不要返回markdown、代码块或字符串化JSON。注意：不要照搬示例，必须基于实际合同内容分析，请勿直接返回示例内容"
 
     model_key = model.lower()
     if model_key not in MODEL_CONFIG:
