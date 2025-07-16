@@ -433,7 +433,7 @@ async function generateDocument(docType) {
     
     // 调用API
     const endpoint = docType === '民事起诉状' ? '/generate_lawsuit' : '/generate_defense';
-    const response = await fetch(`http://localhost:8000${endpoint}`, {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
